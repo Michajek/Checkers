@@ -16,7 +16,7 @@ var score = new Score();
 
         function whiteMove() {
             $(".white").on("click", function() {
-
+                
                 var goodMove1 = Number($(this).attr("id")) - 7;
                 var goodMove2 = Number($(this).attr("id")) - 9;
                 var div1 = "#" + goodMove1;
