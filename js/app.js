@@ -1,62 +1,9 @@
-var disabled = [0,2,4,6,9,11,13,15,16,18,20,22,25,27,29,31,32,
-                34,36,38,41,43,45,47,48,50,52,54,57,59,61,63];
+var Board = require("./board.js")
+var board = new Board();
+board.createBoard();
 
-var black = [1,3,5,7,8,10,12,14,17,19,21,23];
-
-var active = [24,26,28,30,33,35,37,39];
-
-var white = [40,42,44,46,49,51,53,55,56,58,60,62];
-var whiteScoreCounter = 0;
-var blackScoreCounter = 0;
-
-function createBoard() {
-    for (var i = 0; i < 64; i++) {
-        var newDiv = $("<div></div>");
-        newDiv.attr("id", i);
-        $(".board").append($(newDiv));
-    }
-}
-
-function include(arr, obj) {
-    for(var i=0; i<arr.length; i++) {
-        if (arr[i] == obj) return true;
-    }
-}
-
-function addClassBoard() {
-    $(".board div").each(function () {
-        if (include(disabled, $(this).attr("id")) == true) {
-            $(this).addClass("disabled")
-        } else if (include(black, $(this).attr("id")) == true) {
-            $(this).addClass("black")
-        } else if (include(active, $(this).attr("id")) == true) {
-            $(this).addClass("active")
-        } else {
-            $(this).addClass("white")
-        }
-    })
-}
-createBoard();
-addClassBoard();
-
-
-
-
-
-
-    //Liczy punkty Białych
-
-        function whiteScore(whiteScore) {
-            var divScore = $(".whiteScore")
-            whiteScoreCounter++
-            divScore.text("White score: " + whiteScoreCounter)
-        }
-    //Liczy punkty Czarnych
-        function blackScore(blackScore) {
-            var divScore = $(".blackScore")
-            blackScoreCounter++
-            divScore.text("Black score: " + blackScoreCounter)
-        }
+var Score = require("./score.js")
+var score = new Score();
 
         //// RUSZANIE SIĘ BIAŁYMI
 
@@ -157,7 +104,7 @@ addClassBoard();
             var goodMove1 = Number($(this).attr("id")) + 7;
             var div1 = "#" + goodMove1;
             if ($(div1).attr("class") == "black") {
-                whiteScore(whiteScoreCounter);
+                score.whiteScore(score.whiteScoreCounter);
                 getDownRightWhite(self);
             }
             $(div1).removeClass();
@@ -187,7 +134,7 @@ addClassBoard();
             var goodMove1 = Number($(this).attr("id")) + 9;
             var div1 = "#" + goodMove1;
             if ($(div1).attr("class") == "black") {
-                whiteScore(whiteScoreCounter);
+                score.whiteScore(score.whiteScoreCounter);
                 getDownLeftWhite(self);
             }
             $(div1).removeClass();
@@ -265,17 +212,19 @@ addClassBoard();
         $(this).addClass("checkedThis");
         if ($(div1).attr("class") == "active") {
             $(div1).addClass("checkedLeft");
+            blackCheckedLeft();
         } else if ($(div1).attr("class") == "white" && $(getDownDiv1).attr("class") == "active") {
             $(getDownDiv1).addClass("checkedLeft");
+            blackCheckedLeft();
         }
         if ($(div2).attr("class") == "active") {
             $(div2).addClass("checkedRight");
+            blackCheckedRight();
         } else if ($(div2).attr("class") == "white" && $(getDownDiv2).attr("class") == "active") {
             $(getDownDiv2).addClass("checkedRight");
+            blackCheckedRight();
             }
         blockOtherDivBlack();
-        blackCheckedRight();
-        blackCheckedLeft();
         checkedThisReturnFunctionsBlack();
     })
 }
@@ -333,7 +282,7 @@ function blackCheckedRight () {
         var goodMove1 = Number($(this).attr("id")) - 9;
         var div1 = "#" + goodMove1;
         if ($(div1).attr("class") == "white") {
-            blackScore(blackScoreCounter);
+            score.blackScore(score.blackScoreCounter);
             getDownRightBlack(self);
         }
         $(div1).removeClass();
@@ -362,7 +311,7 @@ function blackCheckedLeft () {
         var goodMove1 = Number($(this).attr("id")) - 7;
         var div1 = "#" + goodMove1;
         if ($(div1).attr("class") == "white") {
-            blackScore(blackScoreCounter);
+            score.blackScore(score.blackScoreCounter);
             getDownLeftBlack(self);
         }
 

@@ -1,4 +1,4 @@
-var Board = function () {
+function Board() {
 
     var disabled = [0,2,4,6,9,11,13,15,16,18,20,22,25,27,29,31,32,
                     34,36,38,41,43,45,47,48,50,52,54,57,59,61,63];
@@ -9,21 +9,23 @@ var Board = function () {
 
     var white = [40,42,44,46,49,51,53,55,56,58,60,62];
 
-    this.function createBoard() {
+    function createBoard() {
         for (var i = 0; i < 64; i++) {
             var newDiv = $("<div></div>");
             newDiv.attr("id", i);
             $(".board").append($(newDiv));
         }
+
+        addClassBoard();
     }
 
-    this.function include(arr, obj) {
+    function include(arr, obj) {
         for(var i=0; i<arr.length; i++) {
             if (arr[i] == obj) return true;
         }
     }
 
-    this.function addClassBoard() {
+    function addClassBoard() {
         $(".board div").each(function () {
             if (include(disabled, $(this).attr("id")) == true) {
                 $(this).addClass("disabled")
@@ -36,8 +38,9 @@ var Board = function () {
             }
         })
     }
-    this.createBoard();
-    this.addClassBoard();
 
+    return {
+        createBoard: createBoard
+    }
 }
 module.exports = Board;
