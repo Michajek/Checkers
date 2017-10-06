@@ -1,0 +1,55 @@
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    padding: 0;
+}
+
+.board {
+  width: 800px;
+  height: 800px;
+  margin: 1em auto;
+}
+
+.board  > div {
+  border: 1px solid black;
+  float: left;
+  width: 100px;
+  height: 100px;
+}
+
+.score {
+    display: flex;
+    justify-content: center;
+}
+
+.white {
+    background-color:black;
+    background-image: url("../image/whitepawn.png");
+    background-size : 100px, 100px;
+}
+
+.black {
+    background-color:black;
+    background-image: url("../image/blackpawn.png");
+    background-size : 100px, 100px;
+
+}
+
+.active {
+    background-color:black;
+}
+
+.disabled {
+    background-color: white;
+}
+.checkedRight, .checkedLeft {
+    background-color: green;
+    opacity:0.5;
+}
+
+.checkedThis {
+    opacity:0.5;
+}
