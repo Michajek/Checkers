@@ -13,14 +13,12 @@ var score = new Score();
             var allActiveFields = [1,3,5,7,8,10,12,14,17,19,21,23,24,26,28,30,33,35,37,39,40,42,44,46,49,51,53,55,56,58,60,62];
             for (var i = 0; i < allActiveFields.length; i++) {
                 var field = "#" + allActiveFields[i]
-                console.log($(field), $(field).attr("class"));
                 $(field).removeClass("checkedRight");
                 $(field).removeClass("checkedLeft");
                 $(field).removeClass("checkedBackLeft");
                 $(field).removeClass("checkedBackRight");
                 $(field).removeClass("checkedThis");
                 $(field).prop('onclick',null).off('click');
-                console.log($(field), $(field).attr("class"));
             }
         }
 
@@ -48,11 +46,67 @@ var score = new Score();
             $(getDownDiv1).attr("class", "active")
         }
 
+        //funkcja bicia przymusowego
+
+        function nextMove(self) {
+            var wasIf = false
+            //Prawo góra
+            var upRightWhiteMove = "#" + (Number($(self).attr("id")) - 7);
+            //Lewo góra
+            var upLeftWhiteMove = "#" + (Number($(self).attr("id")) - 9);
+            //Prawo góra do bicia
+            var upRightWhiteJump = "#" + (Number($(self).attr("id")) - 14);
+            //Lewo góra do bicia
+            var upLeftWhiteJump = "#" + (Number($(self).attr("id")) - 18);
+            //Lewo dół
+            var downLeftWhiteMove = "#" + (Number($(self).attr("id")) + 7);
+            //Lewo dół do bicia
+            var downLeftWhiteJump = "#" + (Number($(self).attr("id")) + 14);
+            //Prawo dół
+            var downRightWhiteMove = "#" + (Number($(self).attr("id")) + 9);
+            //Prawo dół do bicia
+            var downRightWhiteJump = "#" + (Number($(self).attr("id")) + 18);
+            if ($(upLeftWhiteMove).attr("class") == "black"
+                       &&
+                       $(upLeftWhiteJump).attr("class") == "active") {
+                            wasIf = true
+                            $(upLeftWhiteJump).addClass("checkedLeft");
+                            whiteCheckedLeft();
+            }
+            //sprawdza prawą stronę
+            if ( ($(upRightWhiteMove).attr("class") == "black")
+                        &&
+                        ($(upRightWhiteJump).attr("class") == "active")) {
+                            wasIf = true
+                            $(upRightWhiteJump).addClass("checkedRight");
+                            whiteCheckedRight();
+            }
+            //sprawdza lewą stronę dół
+            if ($(downLeftWhiteMove).attr("class") == "black" &&
+                 $(downLeftWhiteJump).attr("class") == "active") {
+                     wasIf = true
+                    $(downLeftWhiteJump).addClass("checkedBackLeft")
+                    whiteCheckedBackLeft();
+
+            }
+            //sprawdza prawą stronę dół
+            if ($(downRightWhiteMove).attr("class") == "black" &&
+                 $(downRightWhiteJump).attr("class") == "active") {
+                     wasIf = true
+                    $(downRightWhiteJump).addClass("checkedBackRight")
+                    whiteCheckedBackRight();
+            }
+            if (wasIf == false) {
+                blackMove();
+            }
+
+        }
+
         //// RUSZANIE SIĘ BIAŁYMI
 
 
 
-        ///CZYŚCI PO ZŁYM WYBORZE white
+        ///CZYŚCI PO ZŁYM WYBORZE białych
 
         function checkedThisReturnFunctionsWhite() {
             $(".checkedThis").on("click", function() {
@@ -131,6 +185,14 @@ var score = new Score();
                 if ($(div1).attr("class") == "black") {
                     score.whiteScore(score.whiteScoreCounter);
                     getDownWhite(self, 14);
+                    $(div1).prop('onclick',null).off('click');
+                    $(div1).removeClass();
+                    $(div1).attr("class", "active")
+                    clearCheckedFields();
+                    nextMove(self);
+                } else {
+                    clearCheckedFields();
+                    blackMove();
                 }
                 $(div1).prop('onclick',null).off('click');
                 $(div1).removeClass();
@@ -138,9 +200,6 @@ var score = new Score();
                 $(this).prop('onclick',null).off('click');
                 $(this).removeClass();
                 $(this).attr("class", "white")
-
-                clearCheckedFields();
-                blackMove();
             });
         }
 
@@ -154,6 +213,14 @@ var score = new Score();
                 if ($(div1).attr("class") == "black") {
                     score.whiteScore(score.whiteScoreCounter);
                     getDownWhite(self, 18);
+                    $(div1).prop('onclick',null).off('click');
+                    $(div1).removeClass();
+                    $(div1).attr("class", "active")
+                    clearCheckedFields();
+                    nextMove(self);
+                } else {
+                    clearCheckedFields();
+                    blackMove();
                 }
 
                 $(this).prop('onclick',null).off('click');
@@ -163,9 +230,6 @@ var score = new Score();
                 $(div1).attr("class", "active")
                 $(div1).prop('onclick',null).off('click');
 
-
-                clearCheckedFields();
-                blackMove();
             });
         }
 
@@ -180,6 +244,14 @@ var score = new Score();
                 if ($(div1).attr("class") == "black") {
                     score.whiteScore(score.whiteScoreCounter);
                     getDownBackWhite(self, 18);
+                    $(div1).prop('onclick',null).off('click');
+                    $(div1).removeClass();
+                    $(div1).attr("class", "active")
+                    clearCheckedFields();
+                    nextMove(self);
+                } else {
+                    clearCheckedFields();
+                    blackMove();
                 }
                 $(div1).prop('onclick',null).off('click');
                 $(div1).removeClass();
@@ -187,9 +259,6 @@ var score = new Score();
                 $(this).prop('onclick',null).off('click');
                 $(this).removeClass();
                 $(this).attr("class", "white")
-
-                clearCheckedFields();
-                blackMove();
             });
         }
 
@@ -201,6 +270,14 @@ var score = new Score();
                 if ($(div1).attr("class") == "black") {
                     score.whiteScore(score.whiteScoreCounter);
                     getDownBackWhite(self, 14);
+                    $(div1).prop('onclick',null).off('click');
+                    $(div1).removeClass();
+                    $(div1).attr("class", "active")
+                    clearCheckedFields();
+                    nextMove(self);
+                } else {
+                    clearCheckedFields();
+                    blackMove();
                 }
                 $(div1).prop('onclick',null).off('click');
                 $(div1).removeClass();
@@ -209,8 +286,6 @@ var score = new Score();
                 $(this).removeClass();
                 $(this).attr("class", "white")
 
-                clearCheckedFields();
-                blackMove();
             });
         }
 

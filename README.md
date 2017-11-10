@@ -9,12 +9,12 @@ Funkcjonalności :
 -Liczenie punktów przy zbiciu,
 -Poruszanie,
 -Zbijanie do przodu,
--Podział na tury
+-Podział na tury,
+-Zbijanie do tyłu
 
 Przyszłe fukcjonalności :
 
 -Bicie przymusowe,
--Zbijanie do tyłu,
 -Zbijanie podwójne/potrójne itd,
 -Damka,
 -Podział na moduły.
