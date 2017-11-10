@@ -7,15 +7,6 @@ var score = new Score();
 
 
         whiteMove();
-        //// RUSZANIE SIĘ BIAŁYMI
-
-        /// blokuje inne divy
-        function blockOtherDiv(siteColor) {
-            var allField = $(siteColor)
-            allField.attr('onclick','').unbind('click');
-        }
-
-
         // Czyści wszystko
 
         function clearCheckedFields() {
@@ -32,6 +23,35 @@ var score = new Score();
                 console.log($(field), $(field).attr("class"));
             }
         }
+
+        /// blokuje inne divy
+        function blockOtherDiv(siteColor) {
+            var allField = $(siteColor)
+            allField.attr('onclick','').unbind('click');
+        }
+        //funkcja bicia w przód (białe) w przód (czarne)
+
+        function getDownWhite (self, fields) {
+            var getDown1 = Number((self).attr("id")) + fields
+            var getDownDiv1 = "#" + getDown1;
+            $(getDownDiv1).prop('onclick',null).off('click');
+            $(getDownDiv1).removeClass();
+            $(getDownDiv1).attr("class", "active")
+        }
+
+        // funkcja bicia w tył (białe) w przód (czarne)
+        function getDownBackWhite (self, fields) {
+            var getDown1 = Number((self).attr("id")) - fields
+            var getDownDiv1 = "#" + getDown1;
+            $(getDownDiv1).prop('onclick',null).off('click');
+            $(getDownDiv1).removeClass();
+            $(getDownDiv1).attr("class", "active")
+        }
+
+        //// RUSZANIE SIĘ BIAŁYMI
+
+
+
         ///CZYŚCI PO ZŁYM WYBORZE white
 
         function checkedThisReturnFunctionsWhite() {
@@ -149,24 +169,6 @@ var score = new Score();
             });
         }
 
-        //funkcja bicia w przód
-
-    function getDownWhite (self, fields) {
-        var getDown1 = Number((self).attr("id")) + fields
-        var getDownDiv1 = "#" + getDown1;
-        $(getDownDiv1).prop('onclick',null).off('click');
-        $(getDownDiv1).removeClass();
-        $(getDownDiv1).attr("class", "active")
-    }
-
-    // funkcja bicia w tył
-    function getDownBackWhite (self, fields) {
-        var getDown1 = Number((self).attr("id")) - fields
-        var getDownDiv1 = "#" + getDown1;
-        $(getDownDiv1).prop('onclick',null).off('click');
-        $(getDownDiv1).removeClass();
-        $(getDownDiv1).attr("class", "active")
-    }
 
 
         //Bicie do tyłu
