@@ -10,11 +10,11 @@ Funkcjonalności :
 -Poruszanie,
 -Zbijanie do przodu,
 -Podział na tury,
--Zbijanie do tyłu
+-Zbijanie podwójne/potrójne itd, (Na razie tylko białe)
+-Zbijanie do tyłu (Na razie tylko białe)
 
 Przyszłe fukcjonalności :
 
 -Bicie przymusowe,
--Zbijanie podwójne/potrójne itd,
 -Damka,
 -Podział na moduły.
