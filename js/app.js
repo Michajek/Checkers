@@ -110,7 +110,7 @@ var score = new Score();
                 var div1 = "#" + (Number($(this).attr("id")) + 7);
                 if ($(div1).attr("class") == "black") {
                     score.whiteScore(score.whiteScoreCounter);
-                    getDownRightWhite(self);
+                    getDownWhite(self, 14);
                 }
                 $(div1).prop('onclick',null).off('click');
                 $(div1).removeClass();
@@ -133,7 +133,7 @@ var score = new Score();
                 var div1 = "#" + goodMove1;
                 if ($(div1).attr("class") == "black") {
                     score.whiteScore(score.whiteScoreCounter);
-                    getDownLeftWhite(self);
+                    getDownWhite(self, 18);
                 }
 
                 $(this).prop('onclick',null).off('click');
@@ -149,35 +149,35 @@ var score = new Score();
             });
         }
 
-        //BIcie PRAWO
+        //funkcja bicia w przód
 
-    function getDownRightWhite (self) {
-        var getDown1 = Number((self).attr("id")) + 14
+    function getDownWhite (self, fields) {
+        var getDown1 = Number((self).attr("id")) + fields
         var getDownDiv1 = "#" + getDown1;
         $(getDownDiv1).prop('onclick',null).off('click');
         $(getDownDiv1).removeClass();
         $(getDownDiv1).attr("class", "active")
     }
 
-        //Bicie LEWO
-        function getDownLeftWhite (self) {
-            var getDown1 = Number((self).attr("id")) + 18
-            var getDownDiv1 = "#" + getDown1;
-            $(getDownDiv1).prop('onclick',null).off('click');
-            $(getDownDiv1).removeClass();
-            $(getDownDiv1).attr("class", "active")
+    // funkcja bicia w tył
+    function getDownBackWhite (self, fields) {
+        var getDown1 = Number((self).attr("id")) - fields
+        var getDownDiv1 = "#" + getDown1;
+        $(getDownDiv1).prop('onclick',null).off('click');
+        $(getDownDiv1).removeClass();
+        $(getDownDiv1).attr("class", "active")
+    }
 
-        }
 
         //Bicie do tyłu
         function whiteCheckedBackRight () {
             $(".checkedBackRight").on("click", function() {
                 var self = $(this);
 
-                var div1 = "#" + (Number($(this).attr("id")) - 18);
+                var div1 = "#" + (Number($(this).attr("id")) - 9);
                 if ($(div1).attr("class") == "black") {
                     score.whiteScore(score.whiteScoreCounter);
-                    getDownRightWhite(self);
+                    getDownBackWhite(self, 18);
                 }
                 $(div1).prop('onclick',null).off('click');
                 $(div1).removeClass();
@@ -195,10 +195,10 @@ var score = new Score();
             $(".checkedBackLeft").on("click", function() {
                 var self = $(this);
 
-                var div1 = "#" + (Number($(this).attr("id")) - 14);
+                var div1 = "#" + (Number($(this).attr("id")) - 7);
                 if ($(div1).attr("class") == "black") {
                     score.whiteScore(score.whiteScoreCounter);
-                    getDownRightWhite(self);
+                    getDownBackWhite(self, 14);
                 }
                 $(div1).prop('onclick',null).off('click');
                 $(div1).removeClass();
