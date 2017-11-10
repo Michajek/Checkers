@@ -86,12 +86,14 @@ var score = new Score();
                 if ($(downLeftWhiteMove).attr("class") == "black" &&
                      $(downLeftWhiteJump).attr("class") == "active") {
                     $(downLeftWhiteJump).addClass("checkedBackLeft")
+                    whiteCheckedBackLeft();
 
                 }
                 //sprawdza prawą stronę dół
                 if ($(downRightWhiteMove).attr("class") == "black" &&
                      $(downRightWhiteJump).attr("class") == "active") {
                     $(downRightWhiteJump).addClass("checkedBackRight")
+                    whiteCheckedBackRight();
                 }
 
                 blockOtherDiv(".white");
@@ -158,13 +160,56 @@ var score = new Score();
     }
 
         //Bicie LEWO
-        function getDownLeftWhite (a) {
-            var getDown1 = Number((a).attr("id")) + 18
+        function getDownLeftWhite (self) {
+            var getDown1 = Number((self).attr("id")) + 18
             var getDownDiv1 = "#" + getDown1;
             $(getDownDiv1).prop('onclick',null).off('click');
             $(getDownDiv1).removeClass();
             $(getDownDiv1).attr("class", "active")
 
+        }
+
+        //Bicie do tyłu
+        function whiteCheckedBackRight () {
+            $(".checkedBackRight").on("click", function() {
+                var self = $(this);
+
+                var div1 = "#" + (Number($(this).attr("id")) - 18);
+                if ($(div1).attr("class") == "black") {
+                    score.whiteScore(score.whiteScoreCounter);
+                    getDownRightWhite(self);
+                }
+                $(div1).prop('onclick',null).off('click');
+                $(div1).removeClass();
+                $(div1).attr("class", "active")
+                $(this).prop('onclick',null).off('click');
+                $(this).removeClass();
+                $(this).attr("class", "white")
+
+                clearCheckedFields();
+                blackMove();
+            });
+        }
+
+        function whiteCheckedBackLeft () {
+            $(".checkedBackLeft").on("click", function() {
+                var self = $(this);
+
+                var div1 = "#" + (Number($(this).attr("id")) - 14);
+                if ($(div1).attr("class") == "black") {
+                    score.whiteScore(score.whiteScoreCounter);
+                    getDownRightWhite(self);
+                }
+                $(div1).prop('onclick',null).off('click');
+                $(div1).removeClass();
+                $(div1).attr("class", "active")
+                $(this).prop('onclick',null).off('click');
+                $(this).removeClass();
+                $(this).attr("class", "white")
+
+                clearCheckedFields();
+                blackMove();
+            });
         }
 
 
