@@ -45,7 +45,7 @@ body {
 .disabled {
     background-color: white;
 }
-.checkedRight, .checkedLeft, .checkedBackRight, .checkedBackLeft {
+.checkedRight, .checkedLeft, .checkedBackRight, .checkedBackLeft, .moveRight, .moveLeft {
     background-color: green;
     opacity:0.5;
 }

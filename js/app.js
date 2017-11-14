@@ -18,6 +18,8 @@ var score = new Score();
                 $(field).removeClass("checkedBackLeft");
                 $(field).removeClass("checkedBackRight");
                 $(field).removeClass("checkedThis");
+                $(field).removeClass("moveLeft");
+                $(field).removeClass("moveRight");
                 $(field).prop('onclick',null).off('click');
             }
         }
@@ -202,7 +204,7 @@ var score = new Score();
                 var wasBeat = false;
                 //sprawdza lewą stronę
                 if ($(upLeftWhiteMove).attr("class") == "active"){
-                    $(upLeftWhiteMove).addClass("checkedLeft");
+                    $(upLeftWhiteMove).addClass("moveLeft");
 
                 } else if ($(upLeftWhiteMove).attr("class") == "black"
                            &&
@@ -212,7 +214,7 @@ var score = new Score();
                 }
                 //sprawdza prawą stronę
                 if ($(upRightWhiteMove).attr("class") == "active"){
-                    $(upRightWhiteMove).addClass("checkedRight");
+                    $(upRightWhiteMove).addClass("moveRight");
                 } else if ( ($(upRightWhiteMove).attr("class") == "black")
                             &&
                             ($(upRightWhiteJump).attr("class") == "active")) {
@@ -236,26 +238,57 @@ var score = new Score();
                 }
 
                 if (wasBeat === true) {
-                    $(upLeftWhiteMove).removeClass("checkedLeft");
-                    $(upRightWhiteMove).removeClass("checkedRight");
+                    $(upLeftWhiteMove).removeClass("moveLeft");
+                    $(upRightWhiteMove).removeClass("moveRight");
                 }
                 whiteCheckedRight();
                 whiteCheckedLeft();
                 whiteCheckedBackLeft();
                 whiteCheckedBackRight();
+                moveRight();
+                moveLeft();
 
                 blockOtherDiv(".white");
                 checkedThisReturnFunctionsWhite();
             })
         }
-
+        // Ruch w prawo
+        function moveRight() {
+            $(".moveRight").on("click", function() {
+                mustBeat();
+                var self = $(this);
+                var div1 = "#" + (Number($(this).attr("id")) + 7);
+                $(div1).prop('onclick',null).off('click');
+                $(div1).removeClass();
+                $(div1).attr("class", "active")
+                $(this).prop('onclick',null).off('click');
+                $(this).removeClass();
+                $(this).attr("class", "white")
+                clearCheckedFields();
+                blackMove();
+            });
+        }
+        // Ruch w lewo
+        function moveLeft() {
+            $(".moveleft").on("click", function() {
+                mustBeat();
+                var self = $(this);
+                var div1 = "#" + (Number($(this).attr("id")) + 9);
+                $(div1).prop('onclick',null).off('click');
+                $(div1).removeClass();
+                $(div1).attr("class", "active")
+                $(this).prop('onclick',null).off('click');
+                $(this).removeClass();
+                $(this).attr("class", "white")
+                clearCheckedFields();
+                blackMove();
+            });
+        }
 
         //bicie w prawo
         function whiteCheckedRight () {
             $(".checkedRight").on("click", function() {
                 var self = $(this);
-                mustBeat();
-
                 var div1 = "#" + (Number($(this).attr("id")) + 7);
                 if ($(div1).attr("class") == "black") {
                     score.whiteScore(score.whiteScoreCounter);
@@ -279,11 +312,10 @@ var score = new Score();
         }
 
 
-        //RUCH W LEWO
+        //Bicie W LEWO
         function whiteCheckedLeft () {
             $(".checkedLeft").on("click", function() {
                 var self = $(this);
-                mustBeat();
                 var goodMove1 = Number($(this).attr("id")) + 9;
                 var div1 = "#" + goodMove1;
                 if ($(div1).attr("class") == "black") {
