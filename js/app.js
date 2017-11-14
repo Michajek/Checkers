@@ -221,8 +221,6 @@ var score = new Score();
                     $(upRightWhiteJump).addClass("checkedRight");
                     wasBeat = true
                 }
-                console.log(wasBeat);
-
 
                 //sprawdza lewą stronę dół
                 if ($(downLeftWhiteMove).attr("class") == "black" &&
@@ -270,7 +268,7 @@ var score = new Score();
         }
         // Ruch w lewo
         function moveLeft() {
-            $(".moveleft").on("click", function() {
+            $(".moveLeft").on("click", function() {
                 mustBeat();
                 var self = $(this);
                 var div1 = "#" + (Number($(this).attr("id")) + 9);
