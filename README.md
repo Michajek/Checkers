@@ -17,4 +17,3 @@ Przyszłe fukcjonalności :
 
 -Bicie przymusowe,
 -Damka,
--Podział na moduły.
