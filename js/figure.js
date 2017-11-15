@@ -4,11 +4,10 @@ function Figure() {
 
 
     // Czyści wszystko
-
     function clearCheckedFields() {
-        var allActiveFields = [1,3,5,7,8,10,12,14,17,19,21,23,24,26,28,30,33,35,37,39,40,42,44,46,49,51,53,55,56,58,60,62];
-        for (var i = 0; i < allActiveFields.length; i++) {
-            var field = "#" + allActiveFields[i]
+        const allActiveFields = [1,3,5,7,8,10,12,14,17,19,21,23,24,26,28,30,33,35,37,39,40,42,44,46,49,51,53,55,56,58,60,62];
+        for (let i = 0; i < allActiveFields.length; i++) {
+            let field = "#" + allActiveFields[i]
             $(field).removeClass("checkedRight");
             $(field).removeClass("checkedLeft");
             $(field).removeClass("checkedBackLeft");
@@ -25,8 +24,8 @@ function Figure() {
         var allField = $(siteColor)
         allField.attr('onclick','').unbind('click');
     }
-    //funkcja bicia w przód (białe) w przód (czarne)
 
+    //funkcja bicia w przód (białe) w przód (czarne)
     function getDown (self, fields, fieldClass) {
         var getDownDiv1 = "#" + (Number((self).attr("id")) + fields);
         $(getDownDiv1).removeClass();
@@ -34,7 +33,47 @@ function Figure() {
         $(getDownDiv1).attr("class", fieldClass)
     }
 
-    // BICIE przymusowe
+    //Ruchy o jedno pole
+    function moveOneField(moveRightLeft, mustBeatArrayParameter, getDownOneArrayParameter,
+                          getDownTwoArrayParameter, clearCheckedFieldsFunction, siteMove) {
+        $(moveRightLeft).on("click", function() {
+            var self = $(this);
+            mustBeat(...mustBeatArrayParameter)
+            getDown(self, ...getDownOneArrayParameter);
+            getDown(self, ...getDownTwoArrayParameter);
+            clearCheckedFieldsFunction();
+            siteMove();
+        });
+    }
+
+    //Funkcja zbijania
+    function beatRightLeft (beatSite,  getDownOneArrayParameter, getDownTwoArrayParameter, getDownThreeArrayParameter,
+                            clearCheckedFieldsFunction, siteMove, otherSiteClass, siteScore, siteScoreCounter, beatedFieldNumber,FunctionNextMove) {
+        $(beatSite).on("click", function() {
+            var self = $(this)
+            var div1 = "#" + (Number($(this).attr("id")) + beatedFieldNumber);
+            if ($(div1).attr("class") == otherSiteClass) {
+                siteScore(siteScoreCounter);
+                getDown(self, ...getDownThreeArrayParameter);
+                getDown(self, ...getDownOneArrayParameter);
+                clearCheckedFieldsFunction();
+                FunctionNextMove(self)
+            } else {
+                clearCheckedFields();
+                siteMove();
+            }
+            getDown($(this), ...getDownOneArrayParameter);
+            getDown($(this), ...getDownTwoArrayParameter);
+        });
+    }
+
+    ///CZYŚCI PO ZŁYM WYBORZE czarnego
+    function checkedThisReturnFunctions(clearCheckedFieldsFunction, siteMoveFunction) {
+        $(".checkedThis").on("click", function() {
+            clearCheckedFieldsFunction()
+            siteMoveFunction()
+        })
+    }
 
     //Sprawdza bicie przymusowe
     function mustBeat(siteColor, upRight, upLeft, upJumpRight, upJumpLeft,
@@ -44,21 +83,13 @@ function Figure() {
             var beated = false
             //Prawo góra
             for (var i = 0; i < all.length; i++) {
-
                 var upRightMove = "#" + (Number($(all[i]).attr("id")) + upRight);
-                //Lewo góra
                 var upLeftMove = "#" + (Number($(all[i]).attr("id")) + upLeft);
-                //Prawo góra do bicia
                 var upRightJump = "#" + (Number($(all[i]).attr("id")) + upJumpRight);
-                //Lewo góra do bicia
                 var upLeftJump = "#" + (Number($(all[i]).attr("id")) + upJumpLeft);
-                //Lewo dół
                 var downLeftMove = "#" + (Number($(all[i]).attr("id")) + (downLeft));
-                //Lewo dół do bicia
                 var downLeftJump = "#" + (Number($(all[i]).attr("id")) + (downJumpLeft));
-                //Prawo dół
                 var downRightMove = "#" + (Number($(all[i]).attr("id")) + (downRight));
-                //Prawo dół do bicia
                 var downRightJump = "#" + (Number($(all[i]).attr("id")) + (downJumpRight));
                 if ($(upLeftMove).attr("class") == enemyClass
                 &&
@@ -68,7 +99,6 @@ function Figure() {
                     clearCheckedFields();
                     moveFunction;
                 }
-                //sprawdza prawą stronę
                 if ( ($(upRightMove).attr("class") == enemyClass)
                 &&
                 ($(upRightJump).attr("class") == "active")) {
@@ -84,7 +114,6 @@ function Figure() {
                     getDown($(all[i]), 0, "active");
                     clearCheckedFields();
                     moveFunction;
-
                 }
                 //sprawdza prawą stronę dół
                 if ($(downRightMove).attr("class") == enemyClass &&
@@ -95,33 +124,31 @@ function Figure() {
                     moveFunction;
                 }
             }
-
         }
+
+
+        //-------------------------------------------------------------------------
 
         function nextMoveBlack(self) {
             var wasIf = false
-            //Prawo góra
             var upRightMove = "#" + (Number($(self).attr("id")) + 9);
-            //Lewo góra
             var upLeftMove = "#" + (Number($(self).attr("id")) + 7);
-            //Prawo góra do bicia
             var upRightJump = "#" + (Number($(self).attr("id")) + 14);
-            //Lewo góra do bicia
             var upLeftJump = "#" + (Number($(self).attr("id")) + 18);
-            //Lewo dół
             var downLeftMove = "#" + (Number($(self).attr("id")) - 9);
-            //Lewo dół do bicia
             var downLeftJump = "#" + (Number($(self).attr("id")) - 18);
-            //Prawo dół
             var downRightMove = "#" + (Number($(self).attr("id")) - 7);
-            //Prawo dół do bicia
             var downRightJump = "#" + (Number($(self).attr("id")) - 14);
             if ($(upLeftMove).attr("class") == "white"
             &&
             $(upLeftJump).attr("class") == "active") {
                 wasIf = true
                 $(upLeftJump).addClass("checkedLeft");
-                blackCheckedLeft();
+                let getDownOneArrayParam = [-7, "active"]
+                let getDownTwoArrayParam = [0, "black"]
+                let getDownThreeArrayParam = [-14, "active"]
+                beatRightLeft(".checkedLeft", getDownOneArrayParam, getDownTwoArrayParam, getDownThreeArrayParam, clearCheckedFields,
+                              whiteMove, "white", score.blackScore, score.blackScoreCounter, -7, nextMoveBlack)
             }
             //sprawdza prawą stronę
             if ( ($(upRightMove).attr("class") == "white")
@@ -129,7 +156,11 @@ function Figure() {
             ($(upRightJump).attr("class") == "active")) {
                 wasIf = true
                 $(upRightJump).addClass("checkedRight");
-                blackCheckedRight();
+                let getDownOneArrayParam = [-9, "active"]
+                let getDownTwoArrayParam = [0, "black"]
+                let getDownThreeArrayParam = [-18, "active"]
+                beatRightLeft(".checkedRight", getDownOneArrayParam, getDownTwoArrayParam, getDownThreeArrayParam, clearCheckedFields,
+                              whiteMove, "white", score.blackScore, score.blackScoreCounter, -9, nextMoveBlack)
             }
             //sprawdza lewą stronę dół
             if ($(downLeftMove).attr("class") == "white" &&
@@ -154,54 +185,57 @@ function Figure() {
 
         //// RUSZANIE SIĘ Czarnymi
 
-        ///CZYŚCI PO ZŁYM WYBORZE czarnego
-
-        function checkedThisReturnFunctionsBlack() {
-            $(".checkedThis").on("click", function() {
-                clearCheckedFields()
-                blackMove()
-            })
-        }
-
         function blackMove() {
             $(".black").on("click", function() {
 
                 $(this).addClass("checkedThis");
                 var upRightMove = "#" + (Number($(this).attr("id")) + 9);
-                //Lewo góra
                 var upLeftMove = "#" + (Number($(this).attr("id")) + 7);
-                //Prawo góra do bicia
                 var upRightJump = "#" + (Number($(this).attr("id")) + 18);
-                //Lewo góra do bicia
                 var upLeftJump = "#" + (Number($(this).attr("id")) + 14);
-                //Lewo dół
                 var downLeftMove = "#" + (Number($(this).attr("id")) - 9);
-                //Lewo dół do bicia
                 var downLeftJump = "#" + (Number($(this).attr("id")) - 18);
-                //Prawo dół
                 var downRightMove = "#" + (Number($(this).attr("id")) - 7);
-                //Prawo dół do bicia
                 var downRightJump = "#" + (Number($(this).attr("id")) - 14);
 
                 var wasBeat = false;
-                //sprawdza lewą stronę
+
                 if ($(upLeftMove).attr("class") == "active"){
                     $(upLeftMove).addClass("moveLeft");
+                    let beatArrayParam = [".black", 9, 7, 18, 14, (-9), (-18), (-7), (-14), "white", whiteMove()]
+                    let getDownOneArrayParam = [-7, "active"]
+                    let getDownTwoArrayParam = [0, "black"]
+                    moveOneField(".moveLeft", beatArrayParam, getDownOneArrayParam, getDownTwoArrayParam, clearCheckedFields, whiteMove )
 
                 } else if ($(upLeftMove).attr("class") == "white"
                 &&
                 $(upLeftJump).attr("class") == "active") {
                     $(upLeftJump).addClass("checkedLeft");
                     wasBeat = true
+                    let getDownOneArrayParam = [-7, "active"]
+                    let getDownTwoArrayParam = [0, "black"]
+                    let getDownThreeArrayParam = [-14, "active"]
+                    beatRightLeft(".checkedLeft", getDownOneArrayParam, getDownTwoArrayParam, getDownThreeArrayParam, clearCheckedFields,
+                                  whiteMove, "white", score.blackScore, score.blackScoreCounter, -7, nextMoveBlack)
                 }
                 //sprawdza prawą stronę
                 if ($(upRightMove).attr("class") == "active"){
                     $(upRightMove).addClass("moveRight");
+                    let getDownOneArrayParam = [ -9, "active"]
+                    let getDownTwoArrayParam = [ 0, "black"]
+                    let beatArrayParam = [".black", 9, 7, 18, 14, (-9), (-18), (-7), (-14), "white", whiteMove()]
+                    moveOneField(".moveRight", beatArrayParam, getDownOneArrayParam, getDownTwoArrayParam, clearCheckedFields,whiteMove )
+
                 } else if ( ($(upRightMove).attr("class") == "white")
                 &&
                 ($(upRightJump).attr("class") == "active")) {
                     $(upRightJump).addClass("checkedRight");
                     wasBeat = true
+                    let getDownOneArrayParam = [-9, "active"]
+                    let getDownTwoArrayParam = [0, "black"]
+                    let getDownThreeArrayParam = [-18, "active"]
+                    beatRightLeft(".checkedRight", getDownOneArrayParam, getDownTwoArrayParam, getDownThreeArrayParam, clearCheckedFields,
+                                  whiteMove, "white", score.blackScore, score.blackScoreCounter, -9, nextMoveBlack)
                 }
 
                 //sprawdza lewą stronę dół
@@ -209,135 +243,32 @@ function Figure() {
                 $(downLeftJump).attr("class") == "active") {
                     $(downLeftJump).addClass("checkedBackLeft")
                     wasBeat = true
+                    let getDownOneArrayParam = [9, "active"]
+                    let getDownTwoArrayParam = [0, "black"]
+                    let getDownThreeArrayParam = [18, "active"]
+                    beatRightLeft(".checkedBackLeft", getDownOneArrayParam, getDownTwoArrayParam, getDownThreeArrayParam, clearCheckedFields,
+                                  whiteMove, "white", score.blackScore, score.blackScoreCounter, 9, nextMoveBlack)
                 }
                 //sprawdza prawą stronę dół
                 if ($(downRightMove).attr("class") == "white" &&
                 $(downRightJump).attr("class") == "active") {
                     $(downRightJump).addClass("checkedBackRight")
                     wasBeat = true
+                    let getDownOneArrayParam = [7, "active"]
+                    let getDownTwoArrayParam = [0, "black"]
+                    let getDownThreeArrayParam = [14, "active"]
+                    beatRightLeft(".checkedBackRight", getDownOneArrayParam, getDownTwoArrayParam, getDownThreeArrayParam, clearCheckedFields,
+                                  whiteMove, "white", score.blackScore, score.blackScoreCounter, 7, nextMoveBlack)
                 }
 
                 if (wasBeat === true) {
                     $(upLeftMove).removeClass("moveLeft");
                     $(upRightMove).removeClass("moveRight");
                 }
-                moveRightBlack();
-                moveLeftBlack();
-                blackCheckedRight();
-                blackCheckedLeft();
-                blackCheckedBackLeft();
-                blackCheckedBackRight();
 
                 blockOtherDiv(".black");
-                checkedThisReturnFunctionsBlack();
+                checkedThisReturnFunctions(clearCheckedFields, blackMove);
             })
-        }
-
-        // Ruch w prawo
-        function moveRightBlack() {
-            $(".moveRight").on("click", function() {
-                mustBeat(".black", 9, 7, 18, 14, (-9), (-18), (-7), (-14), "white", whiteMove())
-                getDown($(this), -9, "active");
-                getDown($(this), 0, "black");
-                clearCheckedFields();
-                whiteMove();
-            });
-        }
-        // Ruch w lewo
-        function moveLeftBlack() {
-            $(".moveLeft").on("click", function() {
-                mustBeat(".black", 9, 7, 18, 14, -9, -18, -7, -14, "white", whiteMove())
-                getDown($(this), -7, "active");
-                getDown($(this), 0, "black");
-                clearCheckedFields();
-                whiteMove();
-            });
-        }
-
-        //bicie w prawo
-        function blackCheckedRight () {
-            $(".checkedRight").on("click", function() {
-                var self = $(this)
-                var div1 = "#" + (Number($(this).attr("id")) - 9);
-                if ($(div1).attr("class") == "white") {
-                    score.blackScore(score.blackScoreCounter);
-                    getDown(self, -18, "active");
-                    getDown(self, -9, "active");
-                    clearCheckedFields();
-                    nextMoveBlack(self)
-                } else {
-                    clearCheckedFields();
-                    whiteMove();
-                }
-                getDown($(this), -9, "active");
-                getDown($(this), 0, "black");
-            });
-        }
-
-
-        //Bicie W LEWO
-        function blackCheckedLeft () {
-            $(".checkedLeft").on("click", function() {
-                var self = $(this)
-                var goodMove1 = Number($(this).attr("id")) - 7;
-                var div1 = "#" + goodMove1;
-                if ($(div1).attr("class") == "white") {
-                    score.blackScore(score.blackScoreCounter);
-                    getDown(self, -14, "active");
-                    getDown(self, -7, "active");
-                    clearCheckedFields();
-                    nextMoveBlack(self)
-                } else {
-                    clearCheckedFields();
-                    whiteMove();
-                }
-                getDown($(this), -7, "active");
-                getDown($(this), 0, "black");
-
-            });
-        }
-
-
-
-        //Bicie do tyłu w prawo
-        function blackCheckedBackRight () {
-            $(".checkedBackRight").on("click", function() {
-                var self = $(this)
-                var div1 = "#" + (Number($(this).attr("id")) + 7);
-                if ($(div1).attr("class") == "white") {
-                    score.blackScore(score.blackScoreCounter);
-                    getDown(self, 14, "active");
-                    getDown(self, 7, "active");
-                    clearCheckedFields();
-                    nextMoveBlack(self)
-                } else {
-                    clearCheckedFields();
-                    whiteMove();
-                }
-                getDown($(this), 7, "active");
-                getDown($(this), 0, "black");
-            });
-        }
-
-        //bicie do tyłu w lewo
-        function blackCheckedBackLeft () {
-            $(".checkedBackLeft").on("click", function() {
-                var self = $(this)
-                var div1 = "#" + (Number($(this).attr("id")) + 9);
-                if ($(div1).attr("class") == "white") {
-                    score.blackScore(score.blackScoreCounter);
-                    getDown(self, 18, "active");
-                    getDown(self, 9, "active");
-                    clearCheckedFields();
-                    nextMoveBlack(self)
-                } else {
-                    clearCheckedFields();
-                    whiteMove();
-                }
-                getDown($(this), 9, "active");
-                getDown($(this), 0, "black");
-
-            });
         }
 
 
@@ -348,23 +279,15 @@ function Figure() {
 
         //funkcja bicia podwójnego/potrójnego
 
-        function nextMove(self) {
+        function nextMoveWhite(self) {
             var wasIf = false
-            //Prawo góra
             var upRightWhiteMove = "#" + (Number($(self).attr("id")) - 7);
-            //Lewo góra
             var upLeftWhiteMove = "#" + (Number($(self).attr("id")) - 9);
-            //Prawo góra do bicia
             var upRightWhiteJump = "#" + (Number($(self).attr("id")) - 14);
-            //Lewo góra do bicia
             var upLeftWhiteJump = "#" + (Number($(self).attr("id")) - 18);
-            //Lewo dół
             var downLeftWhiteMove = "#" + (Number($(self).attr("id")) + 7);
-            //Lewo dół do bicia
             var downLeftWhiteJump = "#" + (Number($(self).attr("id")) + 14);
-            //Prawo dół
             var downRightWhiteMove = "#" + (Number($(self).attr("id")) + 9);
-            //Prawo dół do bicia
             var downRightWhiteJump = "#" + (Number($(self).attr("id")) + 18);
             if ($(upLeftWhiteMove).attr("class") == "black"
             &&
@@ -408,191 +331,91 @@ function Figure() {
 
         ///CZYŚCI PO ZŁYM WYBORZE białych
 
-        function checkedThisReturnFunctionsWhite() {
-            $(".checkedThis").on("click", function() {
-                clearCheckedFields()
-                whiteMove()
-            })
-        }
-
         function whiteMove() {
             $(".white").on("click", function() {
 
                 $(this).addClass("checkedThis");
-                //Prawo góra
-                var upRightWhiteMove = "#" + (Number($(this).attr("id")) - 7);
-                //Lewo góra
-                var upLeftWhiteMove = "#" + (Number($(this).attr("id")) - 9);
-                //Prawo góra do bicia
-                var upRightWhiteJump = "#" + (Number($(this).attr("id")) - 14);
-                //Lewo góra do bicia
-                var upLeftWhiteJump = "#" + (Number($(this).attr("id")) - 18);
-                //Lewo dół
-                var downLeftWhiteMove = "#" + (Number($(this).attr("id")) + 7);
-                //Lewo dół do bicia
-                var downLeftWhiteJump = "#" + (Number($(this).attr("id")) + 14);
-                //Prawo dół
-                var downRightWhiteMove = "#" + (Number($(this).attr("id")) + 9);
-                //Prawo dół do bicia
-                var downRightWhiteJump = "#" + (Number($(this).attr("id")) + 18);
+                var upRightMove = "#" + (Number($(this).attr("id")) - 7);
+                var upLeftMove = "#" + (Number($(this).attr("id")) - 9);
+                var upRightJump = "#" + (Number($(this).attr("id")) - 14);
+                var upLeftJump = "#" + (Number($(this).attr("id")) - 18);
+                var downLeftMove = "#" + (Number($(this).attr("id")) + 7);
+                var downLeftJump = "#" + (Number($(this).attr("id")) + 14);
+                var downRightMove = "#" + (Number($(this).attr("id")) + 9);
+                var downRightJump = "#" + (Number($(this).attr("id")) + 18);
 
                 var wasBeat = false;
                 //sprawdza lewą stronę
-                if ($(upLeftWhiteMove).attr("class") == "active"){
-                    $(upLeftWhiteMove).addClass("moveLeft");
+                if ($(upLeftMove).attr("class") == "active"){
+                    $(upLeftMove).addClass("moveLeft");
+                    let getDownOneArrayParam = [ 9, "active"]
+                    let getDownTwoArrayParam = [ 0, "white"]
+                    let beatArrayParam = [".white", -7, -9, -14, -18, 7, 14, 9, 18, "black", blackMove()]
+                    moveOneField(".moveLeft", beatArrayParam, getDownOneArrayParam, getDownTwoArrayParam, clearCheckedFields,blackMove )
 
-                } else if ($(upLeftWhiteMove).attr("class") == "black"
+                } else if ($(upLeftMove).attr("class") == "black"
                 &&
-                $(upLeftWhiteJump).attr("class") == "active") {
-                    $(upLeftWhiteJump).addClass("checkedLeft");
+                $(upLeftJump).attr("class") == "active") {
+                    $(upLeftJump).addClass("checkedLeft");
                     wasBeat = true
+                    let getDownOneArrayParam = [9, "active"]
+                    let getDownTwoArrayParam = [0, "white"]
+                    let getDownThreeArrayParam = [18, "active"]
+                    beatRightLeft(".checkedLeft", getDownOneArrayParam, getDownTwoArrayParam, getDownThreeArrayParam, clearCheckedFields,
+                                  blackMove, "black", score.whiteScore, score.whiteScoreCounter, 9, nextMoveWhite )
+
                 }
-                //sprawdza prawą stronę
-                if ($(upRightWhiteMove).attr("class") == "active"){
-                    $(upRightWhiteMove).addClass("moveRight");
-                } else if ( ($(upRightWhiteMove).attr("class") == "black")
+                if ($(upRightMove).attr("class") == "active"){
+                    $(upRightMove).addClass("moveRight");
+                    let getDownOneArrayParam = [ 7, "active"]
+                    let getDownTwoArrayParam = [ 0, "white"]
+                    let beatArrayParam = [".white", -7, -9, -14, -18, 7, 14, 9, 18, "black", blackMove()]
+                    moveOneField(".moveRight", beatArrayParam, getDownOneArrayParam, getDownTwoArrayParam, clearCheckedFields,blackMove )
+
+                } else if ( ($(upRightMove).attr("class") == "black")
                 &&
-                ($(upRightWhiteJump).attr("class") == "active")) {
-                    $(upRightWhiteJump).addClass("checkedRight");
+                ($(upRightJump).attr("class") == "active")) {
+                    $(upRightJump).addClass("checkedRight");
                     wasBeat = true
+                    let getDownOneArrayParam = [7, "active"]
+                    let getDownTwoArrayParam = [0, "white"]
+                    let getDownThreeArrayParam = [14, "active"]
+                    beatRightLeft(".checkedRight", getDownOneArrayParam, getDownTwoArrayParam, getDownThreeArrayParam, clearCheckedFields,
+                                  blackMove, "black", score.whiteScore, score.whiteScoreCounter, 7, nextMoveWhite )
                 }
 
                 //sprawdza lewą stronę dół
-                if ($(downLeftWhiteMove).attr("class") == "black" &&
-                $(downLeftWhiteJump).attr("class") == "active") {
-                    $(downLeftWhiteJump).addClass("checkedBackLeft")
+                if ($(downLeftMove).attr("class") == "black" &&
+                $(downLeftJump).attr("class") == "active") {
+                    $(downLeftJump).addClass("checkedBackLeft")
                     wasBeat = true
+                    let getDownOneArrayParam = [-7, "active"]
+                    let getDownTwoArrayParam = [0, "white"]
+                    let getDownThreeArrayParam = [-14, "active"]
+                    beatRightLeft(".checkedBackLeft", getDownOneArrayParam, getDownTwoArrayParam, getDownThreeArrayParam, clearCheckedFields,
+                                  blackMove, "black", score.whiteScore, score.whiteScoreCounter, -7, nextMoveWhite )
                 }
                 //sprawdza prawą stronę dół
-                if ($(downRightWhiteMove).attr("class") == "black" &&
-                $(downRightWhiteJump).attr("class") == "active") {
-                    $(downRightWhiteJump).addClass("checkedBackRight")
+                if ($(downRightMove).attr("class") == "black" &&
+                $(downRightJump).attr("class") == "active") {
+                    $(downRightJump).addClass("checkedBackRight")
                     wasBeat = true
+                    let getDownOneArrayParam = [-9, "active"]
+                    let getDownTwoArrayParam = [0, "white"]
+                    let getDownThreeArrayParam = [-18, "active"]
+                    beatRightLeft(".checkedBackRight", getDownOneArrayParam, getDownTwoArrayParam, getDownThreeArrayParam, clearCheckedFields,
+                                  blackMove, "black", score.whiteScore, score.whiteScoreCounter, -9, nextMoveWhite )
                 }
 
                 if (wasBeat === true) {
-                    $(upLeftWhiteMove).removeClass("moveLeft");
-                    $(upRightWhiteMove).removeClass("moveRight");
+                    $(upLeftMove).removeClass("moveLeft");
+                    $(upLeftMove).prop('onclick',null).off('click');
+                    $(upRightMove).removeClass("moveRight");
+                    $(upRightMove).prop('onclick',null).off('click');
                 }
-                whiteCheckedRight();
-                whiteCheckedLeft();
-                whiteCheckedBackLeft();
-                whiteCheckedBackRight();
-                moveRight();
-                moveLeft();
-
                 blockOtherDiv(".white");
-                checkedThisReturnFunctionsWhite();
+                checkedThisReturnFunctions(clearCheckedFields, whiteMove);
             })
-        }
-        // Ruch w prawo
-        function moveRight() {
-            $(".moveRight").on("click", function() {
-                mustBeat(".white", -7, -9, -14, -18, 7, 14, 9, 18, "black", blackMove())
-                var self = $(this);
-                getDown($(this), 7, "active");
-                getDown($(this), 0, "white");
-                clearCheckedFields();
-                blackMove();
-            });
-        }
-        // Ruch w lewo
-        function moveLeft() {
-            $(".moveLeft").on("click", function() {
-                mustBeat(".white", -7, -9, -14, -18, 7, 14, 9, 18, "black", blackMove())
-                var self = $(this);
-                getDown($(this), 9, "active");
-                getDown($(this), 0, "white");
-                clearCheckedFields();
-                blackMove();
-            });
-        }
-
-        //bicie w prawo
-        function whiteCheckedRight () {
-            $(".checkedRight").on("click", function() {
-                var self = $(this);
-                var div1 = "#" + (Number($(this).attr("id")) + 7);
-                if ($(div1).attr("class") == "black") {
-                    score.whiteScore(score.whiteScoreCounter);
-                    getDown(self, 14, "active");
-                    getDown(self, 7, "active");
-                    clearCheckedFields();
-                    nextMove(self);
-                } else {
-                    clearCheckedFields();
-                    blackMove();
-                }
-                getDown($(this), 7, "active");
-                getDown($(this), 0, "white");
-            });
-        }
-
-
-        //Bicie W LEWO
-        function whiteCheckedLeft () {
-            $(".checkedLeft").on("click", function() {
-                var self = $(this);
-                var goodMove1 = Number($(this).attr("id")) + 9;
-                var div1 = "#" + goodMove1;
-                if ($(div1).attr("class") == "black") {
-                    score.whiteScore(score.whiteScoreCounter);
-                    getDown(self, 18, "active");
-                    getDown(self, 9, "active");
-                    clearCheckedFields();
-                    nextMove(self);
-                } else {
-                    clearCheckedFields();
-                    blackMove();
-                }
-                getDown($(this), 9, "active");
-                getDown($(this), 0, "black");
-
-            });
-        }
-
-
-
-        //Bicie do tyłu
-        function whiteCheckedBackRight () {
-            $(".checkedBackRight").on("click", function() {
-                var self = $(this);
-
-                var div1 = "#" + (Number($(this).attr("id")) - 9);
-                if ($(div1).attr("class") == "black") {
-                    score.whiteScore(score.whiteScoreCounter);
-                    getDown(self, -18, "active");
-                    getDown(self, -9, "active");
-                    clearCheckedFields();
-                    nextMove(self);
-                } else {
-                    clearCheckedFields();
-                    blackMove();
-                }
-                getDown(self, -9, "active");
-                getDown(self, 0, "white");
-            });
-        }
-
-        function whiteCheckedBackLeft () {
-            $(".checkedBackLeft").on("click", function() {
-                var self = $(this);
-
-                var div1 = "#" + (Number($(this).attr("id")) - 7);
-                if ($(div1).attr("class") == "black") {
-                    score.whiteScore(score.whiteScoreCounter);
-                    getDown(self, -14, "active");
-                    getDown(self, -7, "active");
-                    clearCheckedFields();
-                    nextMove(self);
-                } else {
-                    clearCheckedFields();
-                    blackMove();
-                }
-                getDown(self, -7, "active");
-                getDown(self, 0, "white");
-
-            });
         }
 
         return {
