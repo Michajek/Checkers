@@ -2,7 +2,8 @@
 module.exports = {
   entry: "./js/app.js",
   output: {
-    filename: "./js/out.js"
+    path: __dirname + "/js",
+    filename: "out.js"
   },
   devtool: 'cheap-eval-source-map',
   watch: true,
