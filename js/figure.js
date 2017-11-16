@@ -1,5 +1,5 @@
-var Score = require("./score.js")
-var score = new Score();
+let Score = require("./score.js")
+let score = new Score();
 function Figure() {
 
 
@@ -21,13 +21,13 @@ function Figure() {
 
     /// blokuje inne divy
     function blockOtherDiv(siteColor) {
-        var allField = $(siteColor)
+        const allField = $(siteColor)
         allField.attr('onclick','').unbind('click');
     }
 
     //funkcja bicia w przód (białe) w przód (czarne)
     function getDown (self, fields, fieldClass) {
-        var getDownDiv1 = "#" + (Number((self).attr("id")) + fields);
+        const getDownDiv1 = "#" + (Number((self).attr("id")) + fields);
         $(getDownDiv1).removeClass();
         $(getDownDiv1).prop('onclick',null).off('click');
         $(getDownDiv1).attr("class", fieldClass)
@@ -37,7 +37,7 @@ function Figure() {
     function moveOneField(moveRightLeft, mustBeatArrayParameter, getDownOneArrayParameter,
                           getDownTwoArrayParameter, clearCheckedFieldsFunction, siteMove) {
         $(moveRightLeft).on("click", function() {
-            var self = $(this);
+            const self = $(this);
             mustBeat(...mustBeatArrayParameter)
             getDown(self, ...getDownOneArrayParameter);
             getDown(self, ...getDownTwoArrayParameter);
@@ -50,8 +50,8 @@ function Figure() {
     function beatRightLeft (beatSite,  getDownOneArrayParameter, getDownTwoArrayParameter, getDownThreeArrayParameter,
                             clearCheckedFieldsFunction, siteMove, otherSiteClass, siteScore, siteScoreCounter, beatedFieldNumber,FunctionNextMove) {
         $(beatSite).on("click", function() {
-            var self = $(this)
-            var div1 = "#" + (Number($(this).attr("id")) + beatedFieldNumber);
+            const self = $(this)
+            const div1 = "#" + (Number($(this).attr("id")) + beatedFieldNumber);
             if ($(div1).attr("class") == otherSiteClass) {
                 siteScore(siteScoreCounter);
                 getDown(self, ...getDownThreeArrayParameter);
@@ -78,24 +78,25 @@ function Figure() {
     //Sprawdza bicie przymusowe
     function mustBeat(siteColor, upRight, upLeft, upJumpRight, upJumpLeft,
         downLeft, downJumpLeft, downRight, downJumpRight,
-        enemyClass, moveFunction) {
-            var all = $(siteColor)
-            var beated = false
+        enemyClass, moveFunction, score, scoreCounter) {
+            const all = $(siteColor)
+            let beated = false
             //Prawo góra
             for (var i = 0; i < all.length; i++) {
-                var upRightMove = "#" + (Number($(all[i]).attr("id")) + upRight);
-                var upLeftMove = "#" + (Number($(all[i]).attr("id")) + upLeft);
-                var upRightJump = "#" + (Number($(all[i]).attr("id")) + upJumpRight);
-                var upLeftJump = "#" + (Number($(all[i]).attr("id")) + upJumpLeft);
-                var downLeftMove = "#" + (Number($(all[i]).attr("id")) + (downLeft));
-                var downLeftJump = "#" + (Number($(all[i]).attr("id")) + (downJumpLeft));
-                var downRightMove = "#" + (Number($(all[i]).attr("id")) + (downRight));
-                var downRightJump = "#" + (Number($(all[i]).attr("id")) + (downJumpRight));
+                const upRightMove = "#" + (Number($(all[i]).attr("id")) + upRight);
+                const upLeftMove = "#" + (Number($(all[i]).attr("id")) + upLeft);
+                const upRightJump = "#" + (Number($(all[i]).attr("id")) + upJumpRight);
+                const upLeftJump = "#" + (Number($(all[i]).attr("id")) + upJumpLeft);
+                const downLeftMove = "#" + (Number($(all[i]).attr("id")) + (downLeft));
+                const downLeftJump = "#" + (Number($(all[i]).attr("id")) + (downJumpLeft));
+                const downRightMove = "#" + (Number($(all[i]).attr("id")) + (downRight));
+                const downRightJump = "#" + (Number($(all[i]).attr("id")) + (downJumpRight));
                 if ($(upLeftMove).attr("class") == enemyClass
                 &&
                 $(upLeftJump).attr("class") == "active") {
                     alert("Bicie przymusowe, tracisz piona")
                     getDown($(all[i]), 0, "active");
+                    score(scoreCounter);
                     clearCheckedFields();
                     moveFunction;
                 }
@@ -104,6 +105,7 @@ function Figure() {
                 ($(upRightJump).attr("class") == "active")) {
                     alert("Bicie przymusowe, tracisz piona")
                     getDown($(all[i]), 0, "active");
+                    score(scoreCounter);
                     clearCheckedFields();
                     moveFunction;
                 }
@@ -112,6 +114,7 @@ function Figure() {
                 $(downLeftJump).attr("class") == "active") {
                     alert("Bicie przymusowe, tracisz piona")
                     getDown($(all[i]), 0, "active");
+                    score(scoreCounter);
                     clearCheckedFields();
                     moveFunction;
                 }
@@ -120,6 +123,7 @@ function Figure() {
                 $(downRightJump).attr("class") == "active") {
                     alert("Bicie przymusowe, tracisz piona")
                     getDown($(all[i]), 0, "active");
+                    score(scoreCounter);
                     clearCheckedFields();
                     moveFunction;
                 }
@@ -130,23 +134,23 @@ function Figure() {
         //-------------------------------------------------------------------------
 
         function nextMoveBlack(self) {
-            var wasIf = false
-            var upRightMove = "#" + (Number($(self).attr("id")) + 9);
-            var upLeftMove = "#" + (Number($(self).attr("id")) + 7);
-            var upRightJump = "#" + (Number($(self).attr("id")) + 14);
-            var upLeftJump = "#" + (Number($(self).attr("id")) + 18);
-            var downLeftMove = "#" + (Number($(self).attr("id")) - 9);
-            var downLeftJump = "#" + (Number($(self).attr("id")) - 18);
-            var downRightMove = "#" + (Number($(self).attr("id")) - 7);
-            var downRightJump = "#" + (Number($(self).attr("id")) - 14);
+            let wasIf = false
+            const upRightMove = "#" + (Number($(self).attr("id")) + 9);
+            const upLeftMove = "#" + (Number($(self).attr("id")) + 7);
+            const upRightJump = "#" + (Number($(self).attr("id")) + 18);
+            const upLeftJump = "#" + (Number($(self).attr("id")) + 14);
+            const downLeftMove = "#" + (Number($(self).attr("id")) - 9);
+            const downLeftJump = "#" + (Number($(self).attr("id")) - 18);
+            const downRightMove = "#" + (Number($(self).attr("id")) - 7);
+            const downRightJump = "#" + (Number($(self).attr("id")) - 14);
             if ($(upLeftMove).attr("class") == "white"
             &&
             $(upLeftJump).attr("class") == "active") {
                 wasIf = true
                 $(upLeftJump).addClass("checkedLeft");
-                let getDownOneArrayParam = [-7, "active"]
-                let getDownTwoArrayParam = [0, "black"]
-                let getDownThreeArrayParam = [-14, "active"]
+                const getDownOneArrayParam = [-7, "active"]
+                const getDownTwoArrayParam = [0, "black"]
+                const getDownThreeArrayParam = [-14, "active"]
                 beatRightLeft(".checkedLeft", getDownOneArrayParam, getDownTwoArrayParam, getDownThreeArrayParam, clearCheckedFields,
                               whiteMove, "white", score.blackScore, score.blackScoreCounter, -7, nextMoveBlack)
             }
@@ -156,9 +160,9 @@ function Figure() {
             ($(upRightJump).attr("class") == "active")) {
                 wasIf = true
                 $(upRightJump).addClass("checkedRight");
-                let getDownOneArrayParam = [-9, "active"]
-                let getDownTwoArrayParam = [0, "black"]
-                let getDownThreeArrayParam = [-18, "active"]
+                const getDownOneArrayParam = [-9, "active"]
+                const getDownTwoArrayParam = [0, "black"]
+                const getDownThreeArrayParam = [-18, "active"]
                 beatRightLeft(".checkedRight", getDownOneArrayParam, getDownTwoArrayParam, getDownThreeArrayParam, clearCheckedFields,
                               whiteMove, "white", score.blackScore, score.blackScoreCounter, -9, nextMoveBlack)
             }
@@ -167,7 +171,11 @@ function Figure() {
             $(downLeftJump).attr("class") == "active") {
                 wasIf = true
                 $(downLeftJump).addClass("checkedBackLeft")
-                blackCheckedBackLeft();
+                const getDownOneArrayParam = [9, "active"]
+                const getDownTwoArrayParam = [0, "black"]
+                const getDownThreeArrayParam = [18, "active"]
+                beatRightLeft(".checkedBackLeft", getDownOneArrayParam, getDownTwoArrayParam, getDownThreeArrayParam, clearCheckedFields,
+                              whiteMove, "white", score.blackScore, score.blackScoreCounter, 9, nextMoveBlack)
 
             }
             //sprawdza prawą stronę dół
@@ -175,7 +183,11 @@ function Figure() {
             $(downRightJump).attr("class") == "active") {
                 wasIf = true
                 $(downRightJump).addClass("checkedBackRight")
-                blackCheckedBackRight();
+                const getDownOneArrayParam = [7, "active"]
+                const getDownTwoArrayParam = [0, "black"]
+                const getDownThreeArrayParam = [14, "active"]
+                beatRightLeft(".checkedBackRight", getDownOneArrayParam, getDownTwoArrayParam, getDownThreeArrayParam, clearCheckedFields,
+                              whiteMove, "white", score.blackScore, score.blackScoreCounter, 7, nextMoveBlack)
             }
             if (wasIf == false) {
                 whiteMove();
@@ -189,22 +201,22 @@ function Figure() {
             $(".black").on("click", function() {
 
                 $(this).addClass("checkedThis");
-                var upRightMove = "#" + (Number($(this).attr("id")) + 9);
-                var upLeftMove = "#" + (Number($(this).attr("id")) + 7);
-                var upRightJump = "#" + (Number($(this).attr("id")) + 18);
-                var upLeftJump = "#" + (Number($(this).attr("id")) + 14);
-                var downLeftMove = "#" + (Number($(this).attr("id")) - 9);
-                var downLeftJump = "#" + (Number($(this).attr("id")) - 18);
-                var downRightMove = "#" + (Number($(this).attr("id")) - 7);
-                var downRightJump = "#" + (Number($(this).attr("id")) - 14);
+                const upRightMove = "#" + (Number($(this).attr("id")) + 9);
+                const upLeftMove = "#" + (Number($(this).attr("id")) + 7);
+                const upRightJump = "#" + (Number($(this).attr("id")) + 18);
+                const upLeftJump = "#" + (Number($(this).attr("id")) + 14);
+                const downLeftMove = "#" + (Number($(this).attr("id")) - 9);
+                const downLeftJump = "#" + (Number($(this).attr("id")) - 18);
+                const downRightMove = "#" + (Number($(this).attr("id")) - 7);
+                const downRightJump = "#" + (Number($(this).attr("id")) - 14);
 
                 var wasBeat = false;
 
                 if ($(upLeftMove).attr("class") == "active"){
                     $(upLeftMove).addClass("moveLeft");
-                    let beatArrayParam = [".black", 9, 7, 18, 14, (-9), (-18), (-7), (-14), "white", whiteMove()]
-                    let getDownOneArrayParam = [-7, "active"]
-                    let getDownTwoArrayParam = [0, "black"]
+                    const beatArrayParam = [".black", 9, 7, 18, 14, (-9), (-18), (-7), (-14), "white", whiteMove(), score.whiteScore, score.whiteScoreCounter]
+                    const getDownOneArrayParam = [-7, "active"]
+                    const getDownTwoArrayParam = [0, "black"]
                     moveOneField(".moveLeft", beatArrayParam, getDownOneArrayParam, getDownTwoArrayParam, clearCheckedFields, whiteMove )
 
                 } else if ($(upLeftMove).attr("class") == "white"
@@ -212,18 +224,18 @@ function Figure() {
                 $(upLeftJump).attr("class") == "active") {
                     $(upLeftJump).addClass("checkedLeft");
                     wasBeat = true
-                    let getDownOneArrayParam = [-7, "active"]
-                    let getDownTwoArrayParam = [0, "black"]
-                    let getDownThreeArrayParam = [-14, "active"]
+                    const getDownOneArrayParam = [-7, "active"]
+                    const getDownTwoArrayParam = [0, "black"]
+                    const getDownThreeArrayParam = [-14, "active"]
                     beatRightLeft(".checkedLeft", getDownOneArrayParam, getDownTwoArrayParam, getDownThreeArrayParam, clearCheckedFields,
                                   whiteMove, "white", score.blackScore, score.blackScoreCounter, -7, nextMoveBlack)
                 }
                 //sprawdza prawą stronę
                 if ($(upRightMove).attr("class") == "active"){
                     $(upRightMove).addClass("moveRight");
-                    let getDownOneArrayParam = [ -9, "active"]
-                    let getDownTwoArrayParam = [ 0, "black"]
-                    let beatArrayParam = [".black", 9, 7, 18, 14, (-9), (-18), (-7), (-14), "white", whiteMove()]
+                    const getDownOneArrayParam = [ -9, "active"]
+                    const getDownTwoArrayParam = [ 0, "black"]
+                    const beatArrayParam = [".black", 9, 7, 18, 14, (-9), (-18), (-7), (-14), "white", whiteMove(), score.whiteScore, score.whiteScoreCounter]
                     moveOneField(".moveRight", beatArrayParam, getDownOneArrayParam, getDownTwoArrayParam, clearCheckedFields,whiteMove )
 
                 } else if ( ($(upRightMove).attr("class") == "white")
@@ -231,9 +243,9 @@ function Figure() {
                 ($(upRightJump).attr("class") == "active")) {
                     $(upRightJump).addClass("checkedRight");
                     wasBeat = true
-                    let getDownOneArrayParam = [-9, "active"]
-                    let getDownTwoArrayParam = [0, "black"]
-                    let getDownThreeArrayParam = [-18, "active"]
+                    const getDownOneArrayParam = [-9, "active"]
+                    const getDownTwoArrayParam = [0, "black"]
+                    const getDownThreeArrayParam = [-18, "active"]
                     beatRightLeft(".checkedRight", getDownOneArrayParam, getDownTwoArrayParam, getDownThreeArrayParam, clearCheckedFields,
                                   whiteMove, "white", score.blackScore, score.blackScoreCounter, -9, nextMoveBlack)
                 }
@@ -243,9 +255,9 @@ function Figure() {
                 $(downLeftJump).attr("class") == "active") {
                     $(downLeftJump).addClass("checkedBackLeft")
                     wasBeat = true
-                    let getDownOneArrayParam = [9, "active"]
-                    let getDownTwoArrayParam = [0, "black"]
-                    let getDownThreeArrayParam = [18, "active"]
+                    const getDownOneArrayParam = [9, "active"]
+                    const getDownTwoArrayParam = [0, "black"]
+                    const getDownThreeArrayParam = [18, "active"]
                     beatRightLeft(".checkedBackLeft", getDownOneArrayParam, getDownTwoArrayParam, getDownThreeArrayParam, clearCheckedFields,
                                   whiteMove, "white", score.blackScore, score.blackScoreCounter, 9, nextMoveBlack)
                 }
@@ -254,16 +266,18 @@ function Figure() {
                 $(downRightJump).attr("class") == "active") {
                     $(downRightJump).addClass("checkedBackRight")
                     wasBeat = true
-                    let getDownOneArrayParam = [7, "active"]
-                    let getDownTwoArrayParam = [0, "black"]
-                    let getDownThreeArrayParam = [14, "active"]
+                    const getDownOneArrayParam = [7, "active"]
+                    const getDownTwoArrayParam = [0, "black"]
+                    const getDownThreeArrayParam = [14, "active"]
                     beatRightLeft(".checkedBackRight", getDownOneArrayParam, getDownTwoArrayParam, getDownThreeArrayParam, clearCheckedFields,
                                   whiteMove, "white", score.blackScore, score.blackScoreCounter, 7, nextMoveBlack)
                 }
 
                 if (wasBeat === true) {
                     $(upLeftMove).removeClass("moveLeft");
+                    $(upLeftMove).prop('onclick',null).off('click');
                     $(upRightMove).removeClass("moveRight");
+                    $(upRightMove).prop('onclick',null).off('click');
                 }
 
                 blockOtherDiv(".black");
@@ -280,21 +294,25 @@ function Figure() {
         //funkcja bicia podwójnego/potrójnego
 
         function nextMoveWhite(self) {
-            var wasIf = false
-            var upRightWhiteMove = "#" + (Number($(self).attr("id")) - 7);
-            var upLeftWhiteMove = "#" + (Number($(self).attr("id")) - 9);
-            var upRightWhiteJump = "#" + (Number($(self).attr("id")) - 14);
-            var upLeftWhiteJump = "#" + (Number($(self).attr("id")) - 18);
-            var downLeftWhiteMove = "#" + (Number($(self).attr("id")) + 7);
-            var downLeftWhiteJump = "#" + (Number($(self).attr("id")) + 14);
-            var downRightWhiteMove = "#" + (Number($(self).attr("id")) + 9);
-            var downRightWhiteJump = "#" + (Number($(self).attr("id")) + 18);
+            let wasIf = false
+            const upRightWhiteMove = "#" + (Number($(self).attr("id")) - 7);
+            const upLeftWhiteMove = "#" + (Number($(self).attr("id")) - 9);
+            const upRightWhiteJump = "#" + (Number($(self).attr("id")) - 14);
+            const upLeftWhiteJump = "#" + (Number($(self).attr("id")) - 18);
+            const downLeftWhiteMove = "#" + (Number($(self).attr("id")) + 7);
+            const downLeftWhiteJump = "#" + (Number($(self).attr("id")) + 14);
+            const downRightWhiteMove = "#" + (Number($(self).attr("id")) + 9);
+            const downRightWhiteJump = "#" + (Number($(self).attr("id")) + 18);
             if ($(upLeftWhiteMove).attr("class") == "black"
             &&
             $(upLeftWhiteJump).attr("class") == "active") {
                 wasIf = true
                 $(upLeftWhiteJump).addClass("checkedLeft");
-                whiteCheckedLeft();
+                const getDownOneArrayParam = [9, "active"]
+                const getDownTwoArrayParam = [0, "white"]
+                const getDownThreeArrayParam = [18, "active"]
+                beatRightLeft(".checkedLeft", getDownOneArrayParam, getDownTwoArrayParam, getDownThreeArrayParam, clearCheckedFields,
+                              blackMove, "black", score.whiteScore, score.whiteScoreCounter, 9, nextMoveWhite )
             }
             //sprawdza prawą stronę
             if ( ($(upRightWhiteMove).attr("class") == "black")
@@ -302,14 +320,22 @@ function Figure() {
             ($(upRightWhiteJump).attr("class") == "active")) {
                 wasIf = true
                 $(upRightWhiteJump).addClass("checkedRight");
-                whiteCheckedRight();
+                const getDownOneArrayParam = [7, "active"]
+                const getDownTwoArrayParam = [0, "white"]
+                const getDownThreeArrayParam = [14, "active"]
+                beatRightLeft(".checkedRight", getDownOneArrayParam, getDownTwoArrayParam, getDownThreeArrayParam, clearCheckedFields,
+                              blackMove, "black", score.whiteScore, score.whiteScoreCounter, 7, nextMoveWhite )
             }
             //sprawdza lewą stronę dół
             if ($(downLeftWhiteMove).attr("class") == "black" &&
             $(downLeftWhiteJump).attr("class") == "active") {
                 wasIf = true
                 $(downLeftWhiteJump).addClass("checkedBackLeft")
-                whiteCheckedBackLeft();
+                const getDownOneArrayParam = [-7, "active"]
+                const getDownTwoArrayParam = [0, "white"]
+                const getDownThreeArrayParam = [-14, "active"]
+                beatRightLeft(".checkedBackLeft", getDownOneArrayParam, getDownTwoArrayParam, getDownThreeArrayParam, clearCheckedFields,
+                              blackMove, "black", score.whiteScore, score.whiteScoreCounter, -7, nextMoveWhite )
 
             }
             //sprawdza prawą stronę dół
@@ -317,7 +343,8 @@ function Figure() {
             $(downRightWhiteJump).attr("class") == "active") {
                 wasIf = true
                 $(downRightWhiteJump).addClass("checkedBackRight")
-                whiteCheckedBackRight();
+                beatRightLeft(".checkedBackRight", getDownOneArrayParam, getDownTwoArrayParam, getDownThreeArrayParam, clearCheckedFields,
+                              blackMove, "black", score.whiteScore, score.whiteScoreCounter, -9, nextMoveWhite )
             }
             if (wasIf == false) {
                 blackMove();
@@ -335,22 +362,22 @@ function Figure() {
             $(".white").on("click", function() {
 
                 $(this).addClass("checkedThis");
-                var upRightMove = "#" + (Number($(this).attr("id")) - 7);
-                var upLeftMove = "#" + (Number($(this).attr("id")) - 9);
-                var upRightJump = "#" + (Number($(this).attr("id")) - 14);
-                var upLeftJump = "#" + (Number($(this).attr("id")) - 18);
-                var downLeftMove = "#" + (Number($(this).attr("id")) + 7);
-                var downLeftJump = "#" + (Number($(this).attr("id")) + 14);
-                var downRightMove = "#" + (Number($(this).attr("id")) + 9);
-                var downRightJump = "#" + (Number($(this).attr("id")) + 18);
+                const upRightMove = "#" + (Number($(this).attr("id")) - 7);
+                const upLeftMove = "#" + (Number($(this).attr("id")) - 9);
+                const upRightJump = "#" + (Number($(this).attr("id")) - 14);
+                const upLeftJump = "#" + (Number($(this).attr("id")) - 18);
+                const downLeftMove = "#" + (Number($(this).attr("id")) + 7);
+                const downLeftJump = "#" + (Number($(this).attr("id")) + 14);
+                const downRightMove = "#" + (Number($(this).attr("id")) + 9);
+                const downRightJump = "#" + (Number($(this).attr("id")) + 18);
 
-                var wasBeat = false;
+                let wasBeat = false;
                 //sprawdza lewą stronę
                 if ($(upLeftMove).attr("class") == "active"){
                     $(upLeftMove).addClass("moveLeft");
-                    let getDownOneArrayParam = [ 9, "active"]
-                    let getDownTwoArrayParam = [ 0, "white"]
-                    let beatArrayParam = [".white", -7, -9, -14, -18, 7, 14, 9, 18, "black", blackMove()]
+                    const getDownOneArrayParam = [ 9, "active"]
+                    const getDownTwoArrayParam = [ 0, "white"]
+                    const beatArrayParam = [".white", -7, -9, -14, -18, 7, 14, 9, 18, "black", blackMove(), score.blackScore, score.blackScoreCounter]
                     moveOneField(".moveLeft", beatArrayParam, getDownOneArrayParam, getDownTwoArrayParam, clearCheckedFields,blackMove )
 
                 } else if ($(upLeftMove).attr("class") == "black"
@@ -358,18 +385,18 @@ function Figure() {
                 $(upLeftJump).attr("class") == "active") {
                     $(upLeftJump).addClass("checkedLeft");
                     wasBeat = true
-                    let getDownOneArrayParam = [9, "active"]
-                    let getDownTwoArrayParam = [0, "white"]
-                    let getDownThreeArrayParam = [18, "active"]
+                    const getDownOneArrayParam = [9, "active"]
+                    const getDownTwoArrayParam = [0, "white"]
+                    const getDownThreeArrayParam = [18, "active"]
                     beatRightLeft(".checkedLeft", getDownOneArrayParam, getDownTwoArrayParam, getDownThreeArrayParam, clearCheckedFields,
                                   blackMove, "black", score.whiteScore, score.whiteScoreCounter, 9, nextMoveWhite )
 
                 }
                 if ($(upRightMove).attr("class") == "active"){
                     $(upRightMove).addClass("moveRight");
-                    let getDownOneArrayParam = [ 7, "active"]
-                    let getDownTwoArrayParam = [ 0, "white"]
-                    let beatArrayParam = [".white", -7, -9, -14, -18, 7, 14, 9, 18, "black", blackMove()]
+                    const getDownOneArrayParam = [ 7, "active"]
+                    const getDownTwoArrayParam = [ 0, "white"]
+                    const beatArrayParam = [".white", -7, -9, -14, -18, 7, 14, 9, 18, "black", blackMove(), score.blackScore, score.blackScoreCounter]
                     moveOneField(".moveRight", beatArrayParam, getDownOneArrayParam, getDownTwoArrayParam, clearCheckedFields,blackMove )
 
                 } else if ( ($(upRightMove).attr("class") == "black")
@@ -377,9 +404,9 @@ function Figure() {
                 ($(upRightJump).attr("class") == "active")) {
                     $(upRightJump).addClass("checkedRight");
                     wasBeat = true
-                    let getDownOneArrayParam = [7, "active"]
-                    let getDownTwoArrayParam = [0, "white"]
-                    let getDownThreeArrayParam = [14, "active"]
+                    const getDownOneArrayParam = [7, "active"]
+                    const getDownTwoArrayParam = [0, "white"]
+                    const getDownThreeArrayParam = [14, "active"]
                     beatRightLeft(".checkedRight", getDownOneArrayParam, getDownTwoArrayParam, getDownThreeArrayParam, clearCheckedFields,
                                   blackMove, "black", score.whiteScore, score.whiteScoreCounter, 7, nextMoveWhite )
                 }
@@ -389,9 +416,9 @@ function Figure() {
                 $(downLeftJump).attr("class") == "active") {
                     $(downLeftJump).addClass("checkedBackLeft")
                     wasBeat = true
-                    let getDownOneArrayParam = [-7, "active"]
-                    let getDownTwoArrayParam = [0, "white"]
-                    let getDownThreeArrayParam = [-14, "active"]
+                    const getDownOneArrayParam = [-7, "active"]
+                    const getDownTwoArrayParam = [0, "white"]
+                    const getDownThreeArrayParam = [-14, "active"]
                     beatRightLeft(".checkedBackLeft", getDownOneArrayParam, getDownTwoArrayParam, getDownThreeArrayParam, clearCheckedFields,
                                   blackMove, "black", score.whiteScore, score.whiteScoreCounter, -7, nextMoveWhite )
                 }
@@ -400,9 +427,9 @@ function Figure() {
                 $(downRightJump).attr("class") == "active") {
                     $(downRightJump).addClass("checkedBackRight")
                     wasBeat = true
-                    let getDownOneArrayParam = [-9, "active"]
-                    let getDownTwoArrayParam = [0, "white"]
-                    let getDownThreeArrayParam = [-18, "active"]
+                    const getDownOneArrayParam = [-9, "active"]
+                    const getDownTwoArrayParam = [0, "white"]
+                    const getDownThreeArrayParam = [-18, "active"]
                     beatRightLeft(".checkedBackRight", getDownOneArrayParam, getDownTwoArrayParam, getDownThreeArrayParam, clearCheckedFields,
                                   blackMove, "black", score.whiteScore, score.whiteScoreCounter, -9, nextMoveWhite )
                 }

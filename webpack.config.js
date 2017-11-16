@@ -7,6 +7,7 @@ module.exports = {
   devtool: 'cheap-eval-source-map',
   watch: true,
   module: {
+
     loaders: [
       {
         test: /\.js$/,

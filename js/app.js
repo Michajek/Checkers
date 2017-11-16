@@ -1,8 +1,8 @@
-var Board = require("./board.js")
-var board = new Board();
+let Board = require("./board.js")
+let board = new Board();
 board.createBoard();
 
-var Figure = require("./figure.js")
-var figure = new Figure();
+let Figure = require("./figure.js")
+let figure = new Figure();
 //Startuje
 figure.whiteMove();
